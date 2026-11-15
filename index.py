@@ -46,6 +46,11 @@ sideContent = QVBoxLayout(sidebar)
 sideContent.setContentsMargins(0,30,0,0)
 sideContent.setSpacing(30)
 class SideText (QLabel):
+    def __init__(self,text):
+        super().__init__(text)
+        self.setStyleSheet('''
+padding-left:20px;
+''') 
     clicked = Signal()
     def enterEvent(self, event):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -68,6 +73,9 @@ portText.setObjectName('portText')
 portText.setStyleSheet('font-size:30px;')
 sideContent.addWidget(portText)
 sideContent.addStretch()
+
+
+# Resources
 
 
 window.show()
