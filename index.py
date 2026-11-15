@@ -65,11 +65,27 @@ padding-left:20px;
         super().mousePressEvent(event)
 
 resourceText = SideText('Resources')
-resourceText.setObjectName('resourceText')
-resourceText.setStyleSheet('font-size:30px;')
 portText = SideText('Ports')
+resourceText.setObjectName('resourceText')
+def resourceBg():
+    global current;
+    current = "resource"
+    resourceText.setStyleSheet('font-size:30px;background-color:green')
+    portText.setStyleSheet('font-size:30px;background-color:none')
+
+def portBg():
+    global current;
+    current = "port"
+    portText.setStyleSheet('font-size:30px;background-color:green')
+    resourceText.setStyleSheet('font-size:30px;background-color:none')
+resourceText.clicked.connect(resourceBg)
+resourceText.setAlignment(Qt.AlignmentFlag.AlignCenter)
+resourceText.setStyleSheet('font-size:30px;background-color:green')
+
+portText.setAlignment(Qt.AlignmentFlag.AlignCenter)
 sideContent.addWidget(resourceText)
 portText.setObjectName('portText')
+portText.clicked.connect(portBg)
 portText.setStyleSheet('font-size:30px;')
 sideContent.addWidget(portText)
 sideContent.addStretch()
@@ -77,6 +93,7 @@ sideContent.addStretch()
 
 # Resources
 
+resourceContainer = QVBoxLayout(main)
 
 window.show()
 app.exec()
