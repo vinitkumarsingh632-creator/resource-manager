@@ -84,6 +84,7 @@ ram_block = QHBoxLayout()
 resourceContainer.setContentsMargins(0,30,0,0)
 resourceContainer.addLayout(ram_block)
 ram_ui = QProgressBar()
+
 ram_text = QLabel('RAM')
 ram_block.setContentsMargins(20,0,20,0)
 
@@ -104,7 +105,7 @@ ram_ui.setStyleSheet('''
  border:none;
  background-color:white;
  text-align:center;
- font-size:20px;
+ font-size:30px;
  font-weight:500;
  }
 ''')
@@ -128,7 +129,7 @@ cores_count = QLabel(str(psutil.cpu_count()))
 cores.addWidget(cores_name)
 cores.addWidget(cores_count)
 resourceContainer.addLayout(cores)
-resourceContainer.addStretch()
+cores.setSpacing(50)
 cores.setContentsMargins(20,20,0,0)
 
 cores_name.setStyleSheet('''
@@ -143,6 +144,56 @@ cores_count.setStyleSheet('''
  
 ''')
 cores.addStretch()
+
+# CPU
+
+cpu = QHBoxLayout()
+resourceContainer.addLayout(cpu)
+cpu_usage_label = QLabel("CPU: ")
+cpu_usage = QProgressBar()
+cpu_usage.setRange(0,100)
+cpu.setSpacing(50)
+cpu_usage_label.setObjectName('cpu_usage_label')
+cpu_usage.setObjectName('cpu_usage');
+cpu_usage_label.setStyleSheet('''
+ #cpu_usage_label{
+  font-size:30px;
+  font-size:25px;
+font-weight:800;
+  font-weight:800;
+ }
+''')
+cpu_usage.setStyleSheet('''
+
+ #cpu_usage{
+  font-size:30px;
+  border:none;
+  font-weight:500;
+  background-color:white;
+  color:black;
+  font-size:25px;
+  text-align:center;
+font-weight:800;
+ }
+ #cpu_usage::chunk{
+  background-color:red;
+ }
+ ''')
+
+
+cpu_timer = QTimer()
+def cpu_update ():
+    cpu_usage.setValue((psutil.cpu_percent()));
+cpu_timer.timeout.connect(cpu_update)
+cpu_timer.start(1000)
+cpu.addWidget(cpu_usage_label)
+cpu.addWidget(cpu_usage)
+cpu.setContentsMargins(20,40,20,0)
+
+resourceContainer.addStretch()
+
+
+
 # port
 
 portPage = QWidget()
@@ -156,6 +207,7 @@ def resourceBg():
     resourcePage.show()
     resourceText.setStyleSheet('font-size:30px;background-color:green')
     portText.setStyleSheet('font-size:30px;background-color:none')
+
 
 def portBg():
     global current
