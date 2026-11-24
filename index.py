@@ -75,6 +75,9 @@ sideContent.addStretch()
 
 # Resources
 resourcePage = QWidget()
+resourcePage.setStyleSheet('''
+background-color:plum;
+''')
 main.addWidget(resourcePage)
 resourceContainer = QVBoxLayout(resourcePage)
 ram_block = QHBoxLayout()
@@ -83,7 +86,7 @@ resourceContainer.addLayout(ram_block)
 ram_ui = QProgressBar()
 ram_text = QLabel('RAM')
 ram_block.setContentsMargins(20,0,20,0)
-resourceContainer.addStretch()
+
 ram_text.setStyleSheet('''
  font-size:25px;
  font-weight:800;
@@ -106,14 +109,40 @@ ram_ui.setStyleSheet('''
  }
 ''')
 ram_ui.setRange(0,100)
-ram_ui.setValue(50)
-ram = psutil.virtual_memory().percent
-cores = psutil.cpu_count
-cpu_per_core = psutil.cpu_percent()
-def resource():
-    pass
 
 
+
+def resourceUpdate():
+    ram = psutil.virtual_memory()
+    ram_ui.setValue(ram.percent)
+
+ramTimer = QTimer()
+ramTimer.timeout.connect(resourceUpdate)
+ramTimer.start(1000)
+
+# core
+
+cores = QHBoxLayout()
+cores_name = QLabel('Cores: ')
+cores_count = QLabel(str(psutil.cpu_count()))
+cores.addWidget(cores_name)
+cores.addWidget(cores_count)
+resourceContainer.addLayout(cores)
+resourceContainer.addStretch()
+cores.setContentsMargins(20,20,0,0)
+
+cores_name.setStyleSheet('''
+ font-size:25px;
+ font-weight:800;
+ 
+''')
+cores_count.setStyleSheet('''
+ font-size:30px;
+ font-weight:800;
+ color:red;
+ 
+''')
+cores.addStretch()
 # port
 
 portPage = QWidget()
