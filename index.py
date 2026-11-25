@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QApplication,QWidget,QHBoxLayout,QVBoxLayout,QLabe
 from PySide6.QtCore import Qt,Signal,QTimer
 import sys;
 import psutil;
+import subprocess;
 current = 'resource'
 app = QApplication(sys.argv)
 
@@ -58,7 +59,7 @@ padding-left:20px;
         super().mousePressEvent(event)
 
 resourceText = SideText('Resources')
-portText = SideText('Ports')
+portText = SideText('')
 resourceText.setObjectName('resourceText')
 
 resourceText.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -197,8 +198,14 @@ resourceContainer.addStretch()
 # port
 
 portPage = QWidget()
+portPage.setStyleSheet('''
+background-color:plum;
+''')
+
 main.addWidget(portPage)
 portPage.hide()
+
+
 
 def resourceBg():
     global current;
@@ -209,15 +216,9 @@ def resourceBg():
     portText.setStyleSheet('font-size:30px;background-color:none')
 
 
-def portBg():
-    global current
-    current = "port"
-    resourcePage.hide()
-    portPage.show()
-    portText.setStyleSheet('font-size:30px;background-color:green')
-    resourceText.setStyleSheet('font-size:30px;background-color:none')
+
 
 resourceText.clicked.connect(resourceBg)
-portText.clicked.connect(portBg)
+
 window.show()
 app.exec()
